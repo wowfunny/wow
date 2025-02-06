@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收益计算</title>
+    <script>
+        // 设置初始参数
+        let bitcoinAmount = 539.9978; // 数量
+        let historicalHigh = 797263; // 最高价
+        let costPrice = 218168; // 成本价（人民币）
+
+        function fetchData() {
+            // 获取价格和美元对人民币汇率
+            Promise.all([
+                fetch('https://api.coincap.io/v2/assets/bitcoin'),
+                fetch('https://122.51.252.52:17927/api/realtime_prices')
+            ])
+            .then(responses => {
+                // 确保两个API请求都成功
+                return Promise.all(responses.map(response => {
+                    if (!response.ok) {
+                        throw new Error('请求失败，状态码：' + response.status);
+                    }
+                    return response.json();
+                }));
+            })
+            .then(data => {
+                const bitcoinPriceUSD = data[0].data.priceUsd; // 获取价格（美元）
+                const exchangeRate = data[1].usd_cny; // 获取美元对人民币汇率
+
+                const currentPriceCNY = bitcoinPriceUSD * exchangeRate; // 当前人民币价格
+
+                // 计算总成本、历史总盈利和盈利
+                const totalCost = bitcoinAmount * costPrice;
+                const historicalProfit = bitcoinAmount * historicalHigh;
+                const profit = bitcoinAmount * currentPriceCNY - totalCost;
+
+                // 显示结果
+                document.getElementById('bitcoinAmount').textContent = bitcoinAmount;
+                document.getElementById('historicalHigh').textContent = historicalHigh;
+                document.getElementById('costPrice').textContent = costPrice;
+                document.getElementById('currentPrice').textContent = currentPriceCNY.toFixed(2);
+                document.getElementById('totalCost').textContent = totalCost.toFixed(2);
+                document.getElementById('historicalProfit').textContent = historicalProfit.toFixed(2);
+                document.getElementById('profit').textContent = profit.toFixed(2);
+            })
+            .catch(error => {
+                console.error('数据获取失败:', error);
+                // 如果数据获取失败，显示错误信息
+                document.getElementById('currentPrice').textContent = '获取失败';
+                document.getElementById('totalCost').textContent = '获取失败';
+                document.getElementById('historicalProfit').textContent = '获取失败';
+                document.getElementById('profit').textContent = '获取失败';
+            });
+        }
+
+        // 页面加载完成后，启动数据获取
+        window.onload = function() {
+            fetchData();
+            // 每分钟刷新一次数据
+            setInterval(fetchData, 60000);
+        };
+    </script>
+</head>
+<body>
+    <h1>收益计算</h1>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>参数</th>
+                <th>值</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>数量</td>
+                <td id="bitcoinAmount">0.00000001</td>
+            </tr>
+            <tr>
+                <td>历史最高价</td>
+                <td id="historicalHigh">800000</td>
+            </tr>
+            <tr>
+                <td>成本价</td>
+                <td id="costPrice">400000</td>
+            </tr>
+            <tr>
+                <td>当前价</td>
+                <td id="currentPrice">加载中...</td>
+            </tr>
+            <tr>
+                <td>总成本</td>
+                <td id="totalCost">加载中...</td>
+            </tr>
+            <tr>
+                <td>历史最高浮盈</td>
+                <td id="historicalProfit">加载中...</td>
+            </tr>
+            <tr>
+                <td>当前浮盈</td>
+                <td id="profit">加载中...</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
