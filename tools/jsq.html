@@ -35,6 +35,7 @@
                 const totalCost = bitcoinAmount * costPrice / 10000 ;
                 const historicalProfit = bitcoinAmount * historicalHigh / 10000 ;
                 const profit = bitcoinAmount * currentPriceCNY - totalCost ;
+                const fukui =  profit - historicalProfit ;
 
                 // 显示结果
                 document.getElementById('currentPriceUSD').textContent = currentPriceUSD.toFixed(2);
@@ -45,6 +46,7 @@
                 document.getElementById('totalCost').textContent = totalCost.toFixed(6);
                 document.getElementById('historicalProfit').textContent = historicalProfit.toFixed(6);
                 document.getElementById('profit').textContent = profit.toFixed(6);
+                document.getElementById('fukui').textContent = fukui.toFixed(6);
             })
             .catch(error => {
                 console.error('数据获取失败:', error);
@@ -91,11 +93,11 @@
                 <td id="currentPriceUSD">加载中...</td>
             </tr>
             <tr>
-                <td>当前价(W￥)</td>
+                <td>当前价(W)</td>
                 <td id="currentPrice">加载中...</td>
             </tr>
             <tr>
-                <td>总成本(W￥)</td>
+                <td>总成本(W)</td>
                 <td id="totalCost">加载中...</td>
             </tr>
             <tr>
@@ -106,7 +108,10 @@
                 <td>当前浮盈(W)</td>
                 <td id="profit">加载中...</td>
             </tr>
-        </tbody>
+            <tr>
+                <td>历史浮亏(W)</td>
+                <td id="fukui">加载中...</td>
+            </tr>        </tbody>
     </table>
 </body>
 </html>
