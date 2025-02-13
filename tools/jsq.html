@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -6,7 +7,7 @@
     <title>收益计算</title>
     <script>
         // 设置初始参数
-        let bitcoinAmount = 5.399978; // 数量
+        let deepseedAmount = 5.399978; // 数量
         let historicalHigh = 797263; // 最高价
         let costPrice = 218168; // 成本价（人民币）
 
@@ -32,14 +33,14 @@
                 const currentPriceCNY = bitcoinPriceUSD * exchangeRate / 10000 ; // 当前人民币价格
 
                 // 计算总成本、历史总盈利和盈利
-                const totalCost = bitcoinAmount * costPrice / 10000 ;
-                const historicalProfit = bitcoinAmount * historicalHigh / 10000 ;
-                const profit = bitcoinAmount * currentPriceCNY - totalCost ;
+                const totalCost = deepseedAmount * costPrice / 10000 ;
+                const historicalProfit = deepseedAmount * historicalHigh / 10000 ;
+                const profit = deepseedAmount * currentPriceCNY - totalCost ;
                 const fukui =  profit - historicalProfit ;
 
                 // 显示结果
                 document.getElementById('currentPriceUSD').textContent = currentPriceUSD.toFixed(2);
-                document.getElementById('bitcoinAmount').textContent = bitcoinAmount;
+                document.getElementById('deepseedAmount').textContent = deepseedAmount;
                 document.getElementById('historicalHigh').textContent = historicalHigh;
                 document.getElementById('costPrice').textContent = costPrice;
                 document.getElementById('currentPrice').textContent = currentPriceCNY.toFixed(6);
@@ -77,8 +78,8 @@
         </thead>
         <tbody>
             <tr>
-                <td>数量</td>
-                <td id="bitcoinAmount">0.00000001</td>
+                <td>量化参数：</td>
+                <td id="deepseedAmount">0.00000001</td>
             </tr>
             <tr>
                 <td>历史最高价(￥)</td>
