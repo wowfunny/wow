@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>收益计算</title>
+    <title>参数计算</title>
     <script>
         // 设置初始参数
         let deepseedAmount = 5.399978; // 数量
@@ -48,6 +47,11 @@
                 document.getElementById('historicalProfit').textContent = historicalProfit.toFixed(6);
                 document.getElementById('profit').textContent = profit.toFixed(6);
                 document.getElementById('fukui').textContent = fukui.toFixed(6);
+
+                // 更新时间
+                const now = new Date();
+                const formattedDateTime = formatDate(now);
+                document.getElementById('lastUpdated').textContent = formattedDateTime;
             })
             .catch(error => {
                 console.error('数据获取失败:', error);
@@ -56,7 +60,19 @@
                 document.getElementById('totalCost').textContent = '获取失败';
                 document.getElementById('historicalProfit').textContent = '获取失败';
                 document.getElementById('profit').textContent = '获取失败';
+                document.getElementById('lastUpdated').textContent = '获取失败';
             });
+        }
+
+        // 格式化日期时间
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
 
         // 页面加载完成后，启动数据获取
@@ -68,7 +84,7 @@
     </script>
 </head>
 <body>
-    <h1>收益计算</h1>
+    <h1>参数计算</h1>
     <table border="1" cellpadding="10">
         <thead>
             <tr>
@@ -112,7 +128,12 @@
             <tr>
                 <td>历史浮亏(W)</td>
                 <td id="fukui">加载中...</td>
-            </tr>        </tbody>
+            </tr>
+            <tr>
+                <td>上次更新时间</td>
+                <td id="lastUpdated">加载中...</td>
+            </tr>
+        </tbody>
     </table>
 </body>
 </html>
